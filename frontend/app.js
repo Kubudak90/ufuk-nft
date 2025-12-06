@@ -17,40 +17,12 @@ const CONFIG = {
     
     // Desteklenen ağlar
     NETWORKS: {
-        // Ethereum Mainnet
-        1: {
-            name: "Ethereum",
-            symbol: "ETH",
-            explorer: "https://etherscan.io",
-            rpc: "https://eth.llamarpc.com"
-        },
-        // Sepolia Testnet
-        11155111: {
-            name: "Sepolia Testnet",
-            symbol: "ETH",
-            explorer: "https://sepolia.etherscan.io",
-            rpc: "https://rpc.sepolia.org"
-        },
         // Base Mainnet
         8453: {
             name: "Base",
             symbol: "ETH",
             explorer: "https://basescan.org",
             rpc: "https://mainnet.base.org"
-        },
-        // Base Sepolia
-        84532: {
-            name: "Base Sepolia",
-            symbol: "ETH",
-            explorer: "https://sepolia.basescan.org",
-            rpc: "https://sepolia.base.org"
-        },
-        // Localhost (Hardhat)
-        31337: {
-            name: "Localhost",
-            symbol: "ETH",
-            explorer: "",
-            rpc: "http://127.0.0.1:8545"
         }
     },
     
@@ -242,8 +214,8 @@ async function connectWithProvider(providerType) {
                 currentChainId = Number(network.chainId);
                 
                 if (!CONFIG.NETWORKS[currentChainId]) {
-                    showToast('Lütfen Base Sepolia ağına geçin!', 'warning');
-                    await switchToBaseSepolia(ethereumProvider);
+                    showToast('Lütfen Base Mainnet ağına geçin!', 'warning');
+                    await switchToBase(ethereumProvider);
                     return;
                 }
                 
@@ -304,8 +276,8 @@ async function connectWithProvider(providerType) {
                 currentChainId = Number(network.chainId);
                 
                 if (!CONFIG.NETWORKS[currentChainId]) {
-                    showToast('Lütfen Base Sepolia ağına geçin!', 'warning');
-                    await switchToBaseSepolia(ethereumProvider);
+                    showToast('Lütfen Base Mainnet ağına geçin!', 'warning');
+                    await switchToBase(ethereumProvider);
                     return;
                 }
                 
@@ -353,8 +325,8 @@ async function connectWithProvider(providerType) {
         // Check if network is supported
         if (!CONFIG.NETWORKS[currentChainId]) {
             hideModal();
-            showToast('Desteklenmeyen ağ! Lütfen Base Sepolia ağına geçin.', 'warning');
-            await switchToBaseSepolia(ethereumProvider);
+            showToast('Desteklenmeyen ağ! Lütfen Base Mainnet ağına geçin.', 'warning');
+            await switchToBase(ethereumProvider);
             return;
         }
         
@@ -390,11 +362,11 @@ async function connectWithProvider(providerType) {
     }
 }
 
-async function switchToBaseSepolia(ethereumProvider) {
+async function switchToBase(ethereumProvider) {
     try {
         await ethereumProvider.request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x14A34' }] // 84532 in hex
+            params: [{ chainId: '0x2105' }] // 8453 in hex
         });
     } catch (switchError) {
         // Ağ eklenmemişse ekle
@@ -403,11 +375,11 @@ async function switchToBaseSepolia(ethereumProvider) {
                 await ethereumProvider.request({
                     method: 'wallet_addEthereumChain',
                     params: [{
-                        chainId: '0x14A34',
-                        chainName: 'Base Sepolia',
+                        chainId: '0x2105',
+                        chainName: 'Base',
                         nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-                        rpcUrls: ['https://sepolia.base.org'],
-                        blockExplorerUrls: ['https://sepolia.basescan.org']
+                        rpcUrls: ['https://mainnet.base.org'],
+                        blockExplorerUrls: ['https://basescan.org']
                     }]
                 });
             } catch (addError) {
@@ -452,8 +424,8 @@ async function connectWithWalletConnect() {
         
         const wcProvider = await EthereumProvider.init({
             projectId: WALLETCONNECT_PROJECT_ID,
-            chains: [84532], // Base Sepolia
-            optionalChains: [1, 11155111, 8453], // Ethereum, Sepolia, Base
+            chains: [8453], // Base Mainnet
+            optionalChains: []
             showQrModal: true,
             metadata: {
                 name: 'Umut NFT',
@@ -488,7 +460,7 @@ async function connectWithWalletConnect() {
         // Check if network is supported
         if (!CONFIG.NETWORKS[currentChainId]) {
             hideModal();
-            showToast('Lütfen Base Sepolia ağına geçin!', 'warning');
+            showToast('Lütfen Base Mainnet ağına geçin!', 'warning');
             return;
         }
         
