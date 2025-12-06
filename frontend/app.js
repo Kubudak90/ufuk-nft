@@ -163,21 +163,33 @@ function hideModal() {
 // ============================================
 
 function showWalletModal() {
-    // Eğer zaten bağlıysa, bağlantıyı kes
-    if (userAddress) {
-        disconnectWallet();
-        return;
+    try {
+        // Eğer zaten bağlıysa, bağlantıyı kes
+        if (userAddress) {
+            disconnectWallet();
+            return;
+        }
+        
+        // 🛡️ Kontrat adresi kontrolü
+        if (CONFIG.CONTRACT_ADDRESS === "0x0000000000000000000000000000000000000000") {
+            showToast('Kontrat henüz deploy edilmemiş!', 'error');
+            console.error('❌ CONTRACT_ADDRESS güncellenmemiş! Deploy sonrası app.js dosyasını güncelleyin.');
+            return;
+        }
+        
+        // Wallet seçim modalını göster
+        if (!elements.walletModal) {
+            console.error('❌ Wallet modal elementi bulunamadı!');
+            showToast('Sayfa yüklenirken bir hata oluştu. Lütfen yenileyin.', 'error');
+            return;
+        }
+        
+        elements.walletModal.classList.add('show');
+        console.log('✅ Wallet modal açıldı');
+    } catch (error) {
+        console.error('❌ showWalletModal hatası:', error);
+        showToast('Cüzdan modalı açılamadı. Lütfen sayfayı yenileyin.', 'error');
     }
-    
-    // 🛡️ Kontrat adresi kontrolü
-    if (CONFIG.CONTRACT_ADDRESS === "0x0000000000000000000000000000000000000000") {
-        showToast('Kontrat henüz deploy edilmemiş!', 'error');
-        console.error('❌ CONTRACT_ADDRESS güncellenmemiş! Deploy sonrası app.js dosyasını güncelleyin.');
-        return;
-    }
-    
-    // Wallet seçim modalını göster
-    elements.walletModal.classList.add('show');
 }
 
 function hideWalletModal() {
@@ -185,22 +197,33 @@ function hideWalletModal() {
 }
 
 async function connectWithProvider(providerType) {
-    hideWalletModal();
-    
-    // Provider kontrolü
-    let ethereumProvider = null;
-    
-    if (providerType === 'metamask') {
-        if (window.ethereum?.isMetaMask) {
-            ethereumProvider = window.ethereum;
-        } else if (window.ethereum?.providers) {
-            ethereumProvider = window.ethereum.providers.find(p => p.isMetaMask);
+    try {
+        hideWalletModal();
+        
+        console.log(`🔗 ${providerType} ile bağlanılıyor...`);
+        
+        // Provider kontrolü
+        let ethereumProvider = null;
+        
+        // window.ethereum erişimini güvenli şekilde kontrol et
+        let ethereum = null;
+        try {
+            ethereum = window.ethereum;
+        } catch (e) {
+            console.warn('window.ethereum erişim hatası:', e);
         }
-        if (!ethereumProvider) {
-            showToast('MetaMask yüklü değil!', 'error');
-            window.open('https://metamask.io/download/', '_blank');
-            return;
-        }
+        
+        if (providerType === 'metamask') {
+            if (ethereum?.isMetaMask) {
+                ethereumProvider = ethereum;
+            } else if (ethereum?.providers) {
+                ethereumProvider = ethereum.providers.find(p => p.isMetaMask);
+            }
+            if (!ethereumProvider) {
+                showToast('MetaMask yüklü değil!', 'error');
+                window.open('https://metamask.io/download/', '_blank');
+                return;
+            }
         
         // MetaMask için otomatik bağlantı - önce mevcut hesapları kontrol et
         try {
@@ -300,9 +323,12 @@ async function connectWithProvider(providerType) {
     }
     
     if (!ethereumProvider) {
+        console.error('❌ Ethereum provider bulunamadı');
         showToast('Cüzdan bulunamadı! Lütfen bir Web3 cüzdan yükleyin.', 'error');
         return;
     }
+    
+    console.log('✅ Provider bulundu:', providerType);
     
     try {
         showModal('👛', 'Cüzdan Bağlanıyor', 'Lütfen cüzdanınızda bağlantıyı onaylayın...');
@@ -353,11 +379,19 @@ async function connectWithProvider(providerType) {
         
     } catch (error) {
         hideModal();
-        console.error('Bağlantı hatası:', error);
-        if (error.code === 4001) {
+        console.error('❌ Bağlantı hatası:', error);
+        console.error('Error details:', {
+            code: error.code,
+            message: error.message,
+            stack: error.stack
+        });
+        
+        if (error.code === 4001 || error.code === 'ACTION_REJECTED') {
             showToast('Bağlantı reddedildi.', 'warning');
+        } else if (error.message?.includes('User rejected')) {
+            showToast('Bağlantı kullanıcı tarafından reddedildi.', 'warning');
         } else {
-            showToast('Cüzdan bağlantısı başarısız!', 'error');
+            showToast(`Cüzdan bağlantısı başarısız: ${error.message || 'Bilinmeyen hata'}`, 'error');
         }
     }
 }
