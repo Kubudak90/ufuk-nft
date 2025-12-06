@@ -876,15 +876,17 @@ function setupEventListeners() {
 
 // IPFS Gateway fallback sistemi
 const IPFS_GATEWAYS = [
-    'https://cloudflare-ipfs.com/ipfs/',
-    'https://gateway.pinata.cloud/ipfs/',
     'https://ipfs.io/ipfs/',
+    'https://gateway.ipfs.io/ipfs/',
     'https://dweb.link/ipfs/',
-    'https://gateway.ipfs.io/ipfs/'
+    'https://gateway.pinata.cloud/ipfs/',
+    'https://cloudflare-ipfs.com/ipfs/',
+    'https://ipfs.filebase.io/ipfs/',
+    'https://nftstorage.link/ipfs/'
 ];
 
-const NFT_IMAGE_HASH = 'bafybeifheknvajfjwmret5qulhx5rzyet4ihefrhxw74xb5amof7b6dwge';
-const NFT_IMAGE_FILENAME = 'Gemini_Generated_Image_n02estn02estn02e.png';
+const NFT_IMAGE_HASH = 'QmZb5QEZ7TCTW8YAGjvGvYeGmtQzNGqJao87TD9WZ7vtAL';
+const NFT_IMAGE_FILENAME = ''; // Dosya adı yok, direkt CID ile erişim
 
 function loadNFTImage() {
     const img = document.getElementById('nftImage');
@@ -900,9 +902,11 @@ function loadNFTImage() {
         }
         
         const gateway = IPFS_GATEWAYS[currentGatewayIndex];
-        const imageUrl = `${gateway}${NFT_IMAGE_HASH}/${NFT_IMAGE_FILENAME}`;
+        const imageUrl = NFT_IMAGE_FILENAME 
+            ? `${gateway}${NFT_IMAGE_HASH}/${NFT_IMAGE_FILENAME}`
+            : `${gateway}${NFT_IMAGE_HASH}`;
         
-        console.log(`🖼️ IPFS görsel yükleniyor: ${gateway}`);
+        console.log(`🖼️ IPFS görsel yükleniyor: ${imageUrl}`);
         
         img.onerror = () => {
             console.warn(`❌ Gateway başarısız: ${gateway}`);
