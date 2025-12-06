@@ -1,0 +1,23 @@
+{
+  "name": "umut-nft-yardim",
+  "version": "1.0.0",
+  "description": "Yardım amaçlı NFT projesi - Gelirler belirlenen faydalanıcıya gider",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy:local": "npx hardhat run scripts/deploy.js --network localhost",
+    "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
+    "deploy:base": "npx hardhat run scripts/deploy.js --network base",
+    "node": "npx hardhat node",
+    "frontend": "npx live-server frontend --port=3000"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0",
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^17.2.3"
+  }
+}

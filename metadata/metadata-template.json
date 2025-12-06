@@ -1,0 +1,26 @@
+{
+  "name": "Umut NFT #{{TOKEN_ID}}",
+  "description": "Bu NFT, boyundan altı felçli kardeşimiz için toplanan yardım kampanyasının bir parçasıdır. Her mint, doğrudan faydalanıcının cüzdanına giden bir bağıştır. Teşekkürler! 💜",
+  "image": "ipfs://bafybeifheknvajfjwmret5qulhx5rzyet4ihefrhxw74xb5amof7b6dwge",
+  "external_url": "https://umut-nft.vercel.app",
+  "attributes": [
+    {
+      "trait_type": "Kampanya",
+      "value": "Yardım NFT"
+    },
+    {
+      "trait_type": "Amaç",
+      "value": "Tıbbi Destek"
+    },
+    {
+      "trait_type": "Yıl",
+      "value": "2024"
+    },
+    {
+      "display_type": "number",
+      "trait_type": "Bağış Sırası",
+      "value": "{{TOKEN_ID}}"
+    }
+  ]
+}
+

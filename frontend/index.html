@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umut NFT | Yardım Kampanyası</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-gradient"></div>
+    <div class="floating-hearts">
+        <span class="heart">💜</span>
+        <span class="heart">🤍</span>
+        <span class="heart">💜</span>
+        <span class="heart">🤍</span>
+        <span class="heart">💜</span>
+        <span class="heart">🤍</span>
+        <span class="heart">💜</span>
+        <span class="heart">🤍</span>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🕊️</span>
+                <span class="logo-text">Umut NFT</span>
+            </div>
+            <button id="connectWallet" class="btn btn-connect">
+                <span class="wallet-icon">👛</span>
+                <span class="wallet-text">Cüzdan Bağla</span>
+            </button>
+        </header>
+
+        <!-- Hero Section -->
+        <main class="main">
+            <div class="hero-content">
+                <div class="badge">🌟 Yardım Kampanyası</div>
+                <a href="https://x.com/ufukless1/status/1995904613870932036" target="_blank" class="twitter-link-hero">
+                    <span>🐦</span>
+                    <span>Kardeşimizin Yardım Çağrısı</span>
+                </a>
+                <h1 class="title">
+                    <span class="title-line">Bir NFT,</span>
+                    <span class="title-line accent">Bir Umut</span>
+                </h1>
+                <p class="description">
+                    Boyundan altı felçli kardeşimiz için düzenlenen bu kampanyada,
+                    her NFT satışından elde edilen gelir <strong>doğrudan ve şeffaf</strong> 
+                    olarak kendisine ulaşacaktır.
+                </p>
+            </div>
+
+            <!-- NFT Card -->
+            <div class="nft-section">
+                <div class="nft-card">
+                    <div class="nft-image-container">
+                        <img 
+                            src="https://bafybeifheknvajfjwmret5qulhx5rzyet4ihefrhxw74xb5amof7b6dwge.ipfs.dweb.link?filename=Gemini_Generated_Image_n02estn02estn02e.png" 
+                            alt="Umut NFT" 
+                            class="nft-image"
+                        >
+                    </div>
+                    
+                    <div class="nft-details">
+                        <div class="nft-header">
+                            <h2 class="nft-title">Umut NFT</h2>
+                            <span class="nft-collection">UMUT Collection</span>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <span class="stat-label">Minted</span>
+                                <span class="stat-value" id="mintedCount">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Toplam</span>
+                                <span class="stat-value" id="maxSupply">10000</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Fiyat</span>
+                                <span class="stat-value price" id="mintPrice">$10 <small>(~0.003 ETH)</small></span>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text" id="progressText">%0 Tamamlandı</span>
+                        </div>
+
+                        <!-- Quantity Selector -->
+                        <div class="quantity-section">
+                            <label class="quantity-label">Miktar</label>
+                            <div class="quantity-selector">
+                                <button class="qty-btn" id="decreaseQty">−</button>
+                                <input type="number" id="quantity" value="1" min="1" readonly>
+                                <button class="qty-btn" id="increaseQty">+</button>
+                            </div>
+                            <span class="total-price">Toplam: <strong id="totalPrice">$10 <small>(~0.003 ETH)</small></strong></span>
+                        </div>
+
+                        <!-- Mint Button -->
+                        <button id="mintButton" class="btn btn-mint" disabled>
+                            <span class="btn-icon">💜</span>
+                            <span class="btn-text">Bağış Yap & NFT Al</span>
+                        </button>
+
+                        <p class="mint-note">
+                            * Tüm gelirler otomatik olarak faydalanıcıya gider
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Info Cards -->
+        <section class="info-section">
+            <h2 class="section-title">Nasıl Çalışır?</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">🔒</div>
+                    <h3>%100 Güvenli</h3>
+                    <p>Akıllı kontratta faydalanıcı adresi değiştirilemez şekilde kayıtlıdır.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">👁️</div>
+                    <h3>Tam Şeffaflık</h3>
+                    <p>Tüm işlemler blockchain üzerinde herkes tarafından görülebilir.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">⚡</div>
+                    <h3>Direkt Transfer</h3>
+                    <p>Toplanan bağışlar aracısız olarak kardeşimize ulaşır.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beneficiary Info -->
+        <section class="beneficiary-section">
+            <div class="beneficiary-card">
+                <div class="beneficiary-header">
+                    <span class="beneficiary-icon">👤</span>
+                    <h3>Faydalanıcı Bilgisi</h3>
+                </div>
+                <div class="beneficiary-address">
+                    <span class="label">Cüzdan Adresi:</span>
+                    <code id="beneficiaryAddress">Kontrat bağlandığında görünecek</code>
+                    <button class="copy-btn" id="copyAddress" title="Adresi Kopyala">📋</button>
+                </div>
+                <div class="beneficiary-stats">
+                    <div class="b-stat">
+                        <span class="b-stat-label">Toplanan</span>
+                        <span class="b-stat-value" id="totalCollected">0 ETH</span>
+                    </div>
+                    <div class="b-stat">
+                        <span class="b-stat-label">Bekleyen</span>
+                        <span class="b-stat-value" id="pendingBalance">0 ETH</span>
+                    </div>
+                </div>
+                <a href="#" id="etherscanLink" class="etherscan-link" target="_blank">
+                    🔍 Basescan'da Görüntüle
+                </a>
+                <button id="beneficiaryWithdraw" class="btn btn-secondary" style="display: none; margin-top: 1rem; width: 100%;">
+                    💰 Bağışları Çek
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>💜 Umut NFT Yardım Projesi © 2024</p>
+            <p class="footer-note">Bu proje tamamen hayır amaçlıdır. Her katkı değerlidir.</p>
+        </footer>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Wallet Selector Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content wallet-modal">
+            <div class="modal-header">
+                <h3>🔗 Cüzdan Seç</h3>
+                <button class="close-btn" id="closeWalletModal">✕</button>
+            </div>
+            <div class="wallet-options">
+                <button class="wallet-option" id="connectMetaMask">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask" class="wallet-icon-img">
+                    <div class="wallet-info">
+                        <span class="wallet-name">MetaMask</span>
+                        <span class="wallet-desc">Tarayıcı eklentisi</span>
+                    </div>
+                </button>
+                <button class="wallet-option" id="connectCoinbase">
+                    <img src="https://altcoinsbox.com/wp-content/uploads/2022/12/coinbase-wallet-logo.webp" alt="Coinbase" class="wallet-icon-img">
+                    <div class="wallet-info">
+                        <span class="wallet-name">Coinbase Wallet</span>
+                        <span class="wallet-desc">Coinbase cüzdanı</span>
+                    </div>
+                </button>
+                <button class="wallet-option" id="connectBrave">
+                    <img src="https://brave.com/static-assets/images/brave-logo-sans-text.svg" alt="Brave" class="wallet-icon-img">
+                    <div class="wallet-info">
+                        <span class="wallet-name">Brave Wallet</span>
+                        <span class="wallet-desc">Brave tarayıcı cüzdanı</span>
+                    </div>
+                </button>
+                <button class="wallet-option" id="connectRabby">
+                    <img src="https://rabby.io/favicon.ico" alt="Rabby" class="wallet-icon-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ccircle cx=%2750%27 cy=%2750%27 r=%2740%27 fill=%27%234F46E5%27/%3E%3Ctext x=%2750%27 y=%2755%27 font-size=%2740%27 text-anchor=%27middle%27 fill=%27white%27%3ER%3C/text%3E%3C/svg%3E'">
+                    <div class="wallet-info">
+                        <span class="wallet-name">Rabby Wallet</span>
+                        <span class="wallet-desc">Çok zincirli cüzdan</span>
+                    </div>
+                </button>
+                <div class="wallet-divider">
+                    <span>veya</span>
+                </div>
+                <button class="wallet-option wallet-option-wc" id="connectWalletConnect">
+                    <img src="https://avatars.githubusercontent.com/u/37784886" alt="WalletConnect" class="wallet-icon-img">
+                    <div class="wallet-info">
+                        <span class="wallet-name">WalletConnect</span>
+                        <span class="wallet-desc">QR kod ile 300+ cüzdan</span>
+                    </div>
+                </button>
+            </div>
+            <p class="wallet-note">💡 QR kod ile telefondaki cüzdanınızı bağlayabilirsiniz</p>
+        </div>
+    </div>
+
+    <!-- Transaction Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">⏳</div>
+            <h3 id="modalTitle">İşlem Devam Ediyor</h3>
+            <p id="modalMessage">Lütfen cüzdanınızda işlemi onaylayın...</p>
+            <div class="loader" id="modalLoader"></div>
+            <div id="modalTwitterShare" style="display: none; margin-top: 1rem;">
+                <a id="twitterShareLink" href="#" target="_blank" class="btn btn-mint" style="background: linear-gradient(135deg, #1DA1F2, #0d8bd9);">
+                    <span>🐦</span>
+                    <span>Twitter'da Paylaş - Sen de Ufuk'a Umut Ol!</span>
+                </a>
+            </div>
+            <button id="modalClose" class="btn btn-secondary" style="display: none;">Kapat</button>
+        </div>
+    </div>
+
+    <!-- Ethers.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.9.0/ethers.umd.min.js"></script>
+    <!-- WalletConnect Web3Modal -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
+
