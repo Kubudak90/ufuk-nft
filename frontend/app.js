@@ -9,8 +9,8 @@ const WALLETCONNECT_PROJECT_ID = "3d952de0f0976938939b55baced7d6d6";
 
 // ⚠️ ÖNEMLİ: Bu adresleri deploy sonrası güncelleyin!
 const CONFIG = {
-    // Kontrat adresi - Base Sepolia Testnet
-    CONTRACT_ADDRESS: "0xA6bf0CdE4B5DE28111C48689be81d85d9bEd8324",
+    // Kontrat adresi - Base Mainnet
+    CONTRACT_ADDRESS: "0xFE4D6A499C14b77025Ce236c25124f1712419b14",
     
     // Sabit USD fiyatı (frontend gösterimi için)
     MINT_PRICE_USD: 10,
@@ -54,8 +54,8 @@ const CONFIG = {
         }
     },
     
-    // Tercih edilen ağ (Base Sepolia Testnet)
-    PREFERRED_CHAIN_ID: 84532
+    // Tercih edilen ağ (Base Mainnet)
+    PREFERRED_CHAIN_ID: 8453
 };
 
 // Kontrat ABI - Chainlink Oracle destekli
