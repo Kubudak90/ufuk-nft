@@ -875,11 +875,60 @@ function setupEventListeners() {
 // INITIALIZATION
 // ============================================
 
+// IPFS Gateway fallback sistemi
+const IPFS_GATEWAYS = [
+    'https://cloudflare-ipfs.com/ipfs/',
+    'https://gateway.pinata.cloud/ipfs/',
+    'https://ipfs.io/ipfs/',
+    'https://dweb.link/ipfs/',
+    'https://gateway.ipfs.io/ipfs/'
+];
+
+const NFT_IMAGE_HASH = 'bafybeifheknvajfjwmret5qulhx5rzyet4ihefrhxw74xb5amof7b6dwge';
+const NFT_IMAGE_FILENAME = 'Gemini_Generated_Image_n02estn02estn02e.png';
+
+function loadNFTImage() {
+    const img = document.getElementById('nftImage');
+    if (!img) return;
+    
+    let currentGatewayIndex = 0;
+    
+    function tryNextGateway() {
+        if (currentGatewayIndex >= IPFS_GATEWAYS.length) {
+            console.error('❌ Tüm IPFS gateway\'leri başarısız oldu');
+            img.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22%3E%3Crect fill=%22%238B5CF6%22 width=%22400%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 fill=%22white%22 font-size=%2240%22%3EUmut NFT%3C/text%3E%3C/svg%3E';
+            return;
+        }
+        
+        const gateway = IPFS_GATEWAYS[currentGatewayIndex];
+        const imageUrl = `${gateway}${NFT_IMAGE_HASH}/${NFT_IMAGE_FILENAME}`;
+        
+        console.log(`🖼️ IPFS görsel yükleniyor: ${gateway}`);
+        
+        img.onerror = () => {
+            console.warn(`❌ Gateway başarısız: ${gateway}`);
+            currentGatewayIndex++;
+            tryNextGateway();
+        };
+        
+        img.onload = () => {
+            console.log(`✅ Görsel yüklendi: ${gateway}`);
+        };
+        
+        img.src = imageUrl;
+    }
+    
+    tryNextGateway();
+}
+
 async function init() {
     console.log('🌟 Umut NFT Başlatılıyor...');
     console.log('💵 Sabit Fiyat: $' + CONFIG.MINT_PRICE_USD + ' USD (Chainlink Oracle)');
     
     setupEventListeners();
+    
+    // NFT görselini yükle
+    loadNFTImage();
     
     // Set initial values for demo
     elements.mintPrice.innerHTML = `$${CONFIG.MINT_PRICE_USD} <small>(~0.003 ETH)</small>`;
