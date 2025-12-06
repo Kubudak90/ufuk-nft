@@ -255,7 +255,7 @@ async function connectWithProvider(providerType) {
             } catch (e) {
                 console.log('Auto-connect check failed:', e);
             }
-            } else if (providerType === 'coinbase') {
+        } else if (providerType === 'coinbase') {
             if (ethereum?.isCoinbaseWallet) {
                 ethereumProvider = ethereum;
             } else if (ethereum?.providers) {
@@ -318,19 +318,18 @@ async function connectWithProvider(providerType) {
                 console.log('Rabby auto-connect check failed:', e);
             }
         } else {
-        // Varsayılan - herhangi bir provider
-        ethereumProvider = window.ethereum;
-    }
-    
-    if (!ethereumProvider) {
-        console.error('❌ Ethereum provider bulunamadı');
-        showToast('Cüzdan bulunamadı! Lütfen bir Web3 cüzdan yükleyin.', 'error');
-        return;
-    }
-    
-    console.log('✅ Provider bulundu:', providerType);
-    
-    try {
+            // Varsayılan - herhangi bir provider
+            ethereumProvider = window.ethereum;
+        }
+        
+        if (!ethereumProvider) {
+            console.error('❌ Ethereum provider bulunamadı');
+            showToast('Cüzdan bulunamadı! Lütfen bir Web3 cüzdan yükleyin.', 'error');
+            return;
+        }
+        
+        console.log('✅ Provider bulundu:', providerType);
+        
         showModal('👛', 'Cüzdan Bağlanıyor', 'Lütfen cüzdanınızda bağlantıyı onaylayın...');
         
         // Request accounts
