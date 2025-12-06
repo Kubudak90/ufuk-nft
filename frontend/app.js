@@ -425,7 +425,7 @@ async function connectWithWalletConnect() {
         const wcProvider = await EthereumProvider.init({
             projectId: WALLETCONNECT_PROJECT_ID,
             chains: [8453], // Base Mainnet
-            optionalChains: []
+            optionalChains: [],
             showQrModal: true,
             metadata: {
                 name: 'Umut NFT',
