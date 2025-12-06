@@ -224,100 +224,100 @@ async function connectWithProvider(providerType) {
                 window.open('https://metamask.io/download/', '_blank');
                 return;
             }
-        
-        // MetaMask için otomatik bağlantı - önce mevcut hesapları kontrol et
-        try {
-            const accounts = await ethereumProvider.request({ method: 'eth_accounts' });
-            if (accounts.length > 0) {
-                // Zaten bağlı, direkt devam et
-                userAddress = accounts[0];
-                provider = new ethers.BrowserProvider(ethereumProvider);
-                signer = await provider.getSigner();
-                const network = await provider.getNetwork();
-                currentChainId = Number(network.chainId);
-                
-                if (!CONFIG.NETWORKS[currentChainId]) {
-                    showToast('Lütfen Base Mainnet ağına geçin!', 'warning');
-                    await switchToBase(ethereumProvider);
+            
+            // MetaMask için otomatik bağlantı - önce mevcut hesapları kontrol et
+            try {
+                const accounts = await ethereumProvider.request({ method: 'eth_accounts' });
+                if (accounts.length > 0) {
+                    // Zaten bağlı, direkt devam et
+                    userAddress = accounts[0];
+                    provider = new ethers.BrowserProvider(ethereumProvider);
+                    signer = await provider.getSigner();
+                    const network = await provider.getNetwork();
+                    currentChainId = Number(network.chainId);
+                    
+                    if (!CONFIG.NETWORKS[currentChainId]) {
+                        showToast('Lütfen Base Mainnet ağına geçin!', 'warning');
+                        await switchToBase(ethereumProvider);
+                        return;
+                    }
+                    
+                    contract = new ethers.Contract(CONFIG.CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+                    elements.walletText.innerHTML = `${formatAddress(userAddress)} <small>⏏</small>`;
+                    elements.connectWallet.classList.add('connected');
+                    elements.connectWallet.title = 'Bağlantıyı kesmek için tıkla';
+                    elements.mintButton.disabled = false;
+                    showToast(`MetaMask ile bağlandı!`, 'success');
+                    await loadContractData();
+                    setupWalletListeners(ethereumProvider);
                     return;
                 }
-                
-                contract = new ethers.Contract(CONFIG.CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-                elements.walletText.innerHTML = `${formatAddress(userAddress)} <small>⏏</small>`;
-                elements.connectWallet.classList.add('connected');
-                elements.connectWallet.title = 'Bağlantıyı kesmek için tıkla';
-                elements.mintButton.disabled = false;
-                showToast(`MetaMask ile bağlandı!`, 'success');
-                await loadContractData();
-                setupWalletListeners(ethereumProvider);
+            } catch (e) {
+                console.log('Auto-connect check failed:', e);
+            }
+            } else if (providerType === 'coinbase') {
+            if (ethereum?.isCoinbaseWallet) {
+                ethereumProvider = ethereum;
+            } else if (ethereum?.providers) {
+                ethereumProvider = ethereum.providers.find(p => p.isCoinbaseWallet);
+            } else if (window.coinbaseWalletExtension) {
+                ethereumProvider = window.coinbaseWalletExtension;
+            }
+            if (!ethereumProvider) {
+                showToast('Coinbase Wallet yüklü değil!', 'error');
+                window.open('https://www.coinbase.com/wallet', '_blank');
                 return;
             }
-        } catch (e) {
-            console.log('Auto-connect check failed:', e);
-        }
-    } else if (providerType === 'coinbase') {
-        if (window.ethereum?.isCoinbaseWallet) {
-            ethereumProvider = window.ethereum;
-        } else if (window.ethereum?.providers) {
-            ethereumProvider = window.ethereum.providers.find(p => p.isCoinbaseWallet);
-        } else if (window.coinbaseWalletExtension) {
-            ethereumProvider = window.coinbaseWalletExtension;
-        }
-        if (!ethereumProvider) {
-            showToast('Coinbase Wallet yüklü değil!', 'error');
-            window.open('https://www.coinbase.com/wallet', '_blank');
-            return;
-        }
-    } else if (providerType === 'brave') {
-        if (window.ethereum?.isBraveWallet) {
-            ethereumProvider = window.ethereum;
-        }
-        if (!ethereumProvider) {
-            showToast('Brave Wallet bulunamadı! Brave tarayıcı kullanın.', 'error');
-            return;
-        }
-    } else if (providerType === 'rabby') {
-        if (window.ethereum?.isRabby) {
-            ethereumProvider = window.ethereum;
-        } else if (window.ethereum?.providers) {
-            ethereumProvider = window.ethereum.providers.find(p => p.isRabby);
-        }
-        if (!ethereumProvider) {
-            showToast('Rabby Wallet yüklü değil!', 'error');
-            window.open('https://rabby.io/', '_blank');
-            return;
-        }
-        
-        // Rabby için de otomatik bağlantı
-        try {
-            const accounts = await ethereumProvider.request({ method: 'eth_accounts' });
-            if (accounts.length > 0) {
-                userAddress = accounts[0];
-                provider = new ethers.BrowserProvider(ethereumProvider);
-                signer = await provider.getSigner();
-                const network = await provider.getNetwork();
-                currentChainId = Number(network.chainId);
-                
-                if (!CONFIG.NETWORKS[currentChainId]) {
-                    showToast('Lütfen Base Mainnet ağına geçin!', 'warning');
-                    await switchToBase(ethereumProvider);
+        } else if (providerType === 'brave') {
+            if (ethereum?.isBraveWallet) {
+                ethereumProvider = ethereum;
+            }
+            if (!ethereumProvider) {
+                showToast('Brave Wallet bulunamadı! Brave tarayıcı kullanın.', 'error');
+                return;
+            }
+        } else if (providerType === 'rabby') {
+            if (ethereum?.isRabby) {
+                ethereumProvider = ethereum;
+            } else if (ethereum?.providers) {
+                ethereumProvider = ethereum.providers.find(p => p.isRabby);
+            }
+            if (!ethereumProvider) {
+                showToast('Rabby Wallet yüklü değil!', 'error');
+                window.open('https://rabby.io/', '_blank');
+                return;
+            }
+            
+            // Rabby için de otomatik bağlantı
+            try {
+                const accounts = await ethereumProvider.request({ method: 'eth_accounts' });
+                if (accounts.length > 0) {
+                    userAddress = accounts[0];
+                    provider = new ethers.BrowserProvider(ethereumProvider);
+                    signer = await provider.getSigner();
+                    const network = await provider.getNetwork();
+                    currentChainId = Number(network.chainId);
+                    
+                    if (!CONFIG.NETWORKS[currentChainId]) {
+                        showToast('Lütfen Base Mainnet ağına geçin!', 'warning');
+                        await switchToBase(ethereumProvider);
+                        return;
+                    }
+                    
+                    contract = new ethers.Contract(CONFIG.CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+                    elements.walletText.innerHTML = `${formatAddress(userAddress)} <small>⏏</small>`;
+                    elements.connectWallet.classList.add('connected');
+                    elements.connectWallet.title = 'Bağlantıyı kesmek için tıkla';
+                    elements.mintButton.disabled = false;
+                    showToast(`Rabby ile bağlandı!`, 'success');
+                    await loadContractData();
+                    setupWalletListeners(ethereumProvider);
                     return;
                 }
-                
-                contract = new ethers.Contract(CONFIG.CONTRACT_ADDRESS, CONTRACT_ABI, signer);
-                elements.walletText.innerHTML = `${formatAddress(userAddress)} <small>⏏</small>`;
-                elements.connectWallet.classList.add('connected');
-                elements.connectWallet.title = 'Bağlantıyı kesmek için tıkla';
-                elements.mintButton.disabled = false;
-                showToast(`Rabby ile bağlandı!`, 'success');
-                await loadContractData();
-                setupWalletListeners(ethereumProvider);
-                return;
+            } catch (e) {
+                console.log('Rabby auto-connect check failed:', e);
             }
-        } catch (e) {
-            console.log('Rabby auto-connect check failed:', e);
-        }
-    } else {
+        } else {
         // Varsayılan - herhangi bir provider
         ethereumProvider = window.ethereum;
     }
